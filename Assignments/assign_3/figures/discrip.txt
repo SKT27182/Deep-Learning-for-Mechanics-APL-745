@@ -1,4 +1,4 @@
-### This image conatin the randomly selected 10 pictures from each label and plotted them in a grid.
+### This image contain the randomly selected 6 pictures from each label and plotted them in a grid.
 
 ---
 
@@ -22,8 +22,12 @@
 
 ---
 
-### This is the random plot of the images from the ashion-MNIST training data set.
+### This is the random plot of the images from the Fashion-MNIST training data set from each category.
 
 ---
 
-###
+### This is the plot between accuracy and Iterations for training data. Here we can see that loss is converging very smoothly but it is still decreasing.
+
+1. That's why to avoid the overfitting we have added the L2 Regularization term to the loss with $\lambda$=0.05
+
+---
