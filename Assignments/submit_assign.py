@@ -132,6 +132,8 @@ class AssignmentMarkdown:
         os.chdir(self.assign_dir)
         files = os.listdir()
         for file in files:
+            if file.endswith("test.ipynb"):
+                continue
             if file.endswith("Figures.md"):
                 output_file = "Figures.pdf"
                 if os.path.exists(output_file):
@@ -185,7 +187,8 @@ exclude_folders = [
     "__pycache__",
     ".pytest_cache",
     "figures",
-    "data"
+    # "data",
+    "Figures"
 ]
 
 exclude_files = [
@@ -193,7 +196,8 @@ exclude_files = [
     "test.py",
     "test.ipynb",
     "Figures.md",
-    zip_name
+    zip_name,
+    "test.ipynb"
 ]
 
 
