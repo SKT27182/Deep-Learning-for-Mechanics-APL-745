@@ -117,6 +117,9 @@ class NeuralNetwork:
         # run network over all samples
         output = input_data.T
         for layer in self.layers:
+            # if layer is "DropoutLayer": then pass
+            if layer.__class__.__name__ == "DropoutLayer":
+                continue
             output = layer.forward_propagation(output)
 
         return output.T
