@@ -447,7 +447,7 @@ class DropoutLayer(Layer):
             1, 1 - self.dropout_rate, size=input.shape
         )  # mask (n_[l], batch_size)
 
-        self.output = self.input * self.mask  # output (n_[l], batch_size)
+        self.output = (self.input * self.mask) / ( 1 - self.dropout_rate)  # (n_[l], batch_size)
         return self.output  # (n_[l], batch_size)
 
     def backward_propagation(self, output_error, learning_rate):
@@ -471,5 +471,5 @@ class DropoutLayer(Layer):
             The input error after backward propagation through the dropout layer.
         """
 
-        return output_error * self.mask  # (n_[l], batch_size)
+        return (output_error * self.mask ) / ( 1 - self.dropout_rate)  # (n_[l], batch_size)
     
