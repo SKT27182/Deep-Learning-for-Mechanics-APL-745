@@ -404,9 +404,9 @@ class MiniBatchGD(BaseGD):
             y_shuffle = y[shuffle_indices]
 
             # split the data into batches
-            for i in range(0, m, self.batch_size):
-                X_batch = X_shuffle[i:i + self.batch_size]
-                y_batch = y_shuffle[i:i + self.batch_size]
+            for j in range(0, m, self.batch_size):
+                X_batch = X_shuffle[j:j + self.batch_size]
+                y_batch = y_shuffle[j:j + self.batch_size]
 
                 # calculate the gradient of Loss/Cost Function
                 y_hat = self._y_hat(X_batch, self.weights)
@@ -476,7 +476,7 @@ class StochasticGD(BaseGD):
         for i in range(self.max_iter):
 
             # Update the weights one by one for each data point
-            for i in range(0, m):
+            for _ in range(0, m):
 
                 # take a data point randomly at a time and update the weights
                 index = np.random.randint(m)
