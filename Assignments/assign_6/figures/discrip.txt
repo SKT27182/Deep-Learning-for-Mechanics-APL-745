@@ -1,0 +1,13 @@
+### This is Displacement vs Position graph for Displacement vs x for both Predicted and Actual values. Here Analytical Solution is $u(x) = \sin(2\pi x)$
+
+---
+
+### This is the Plot of the Different types of Loss Functions while training the model.
+
+---
+
+### This the plot of E(x) vs x for both Predicted and Actual values. Here Analytical Solution is $E(x) = x^3 - x^2 + 1$
+
+---
+
+### This is the Plot of the Differential Loss/Total Loss vs Epochs as here we don't have any Boundary Loss.

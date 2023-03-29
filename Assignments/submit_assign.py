@@ -174,52 +174,54 @@ def main(assignment, zip_name, exclude_folders, exclude_files, mark_down_fig, fi
 
 
 
-assignment =  sys.argv[1]
-zip_name = os.environ.get("zip_name")
-
-# figure dir path
-
-mark_down_fig = "Figures.md"
-fig_folder = "figures"
-
-exclude_folders = [
-    ".ipynb_checkpoints",
-    "__pycache__",
-    ".pytest_cache",
-    "figures",
-    # "data",
-    "Figures"
-]
-
-exclude_files = [
-    "submit_assn.py",
-    "test.py",
-    "test.ipynb",
-    "Figures.md",
-    zip_name,
-    "test.ipynb"
-]
-
-
-assignment_num = assignment[-1]
-
-template = f"""---
-title: "Assignment {assignment_num} Plots"
-author: "Shailja Kant Tiwari"
-header-includes:
-  - \\usepackage{{amssymb,amsmath,geometry}}
-  - \\setmainfont{{TeX Gyre Schola}}
-  - \\setmathfont{{TeX Gyre Schola Math}}
-output:
-  pdf_document
----
-
-# Assignment {assignment_num}
-
-"""
 
 
 
-main(assignment=assignment, zip_name=zip_name,
-     exclude_folders=exclude_folders, exclude_files=exclude_files, 
-     mark_down_fig=mark_down_fig, fig_folder=fig_folder, template=template)
+if __name__ == "__main__":
+    assignment =  sys.argv[1]
+    zip_name = os.environ.get("zip_name")
+
+    # figure dir path
+
+    mark_down_fig = "Figures.md"
+    fig_folder = "figures"
+
+    exclude_folders = [
+        ".ipynb_checkpoints",
+        "__pycache__",
+        ".pytest_cache",
+        "figures",
+        # "data",
+        "Figures"
+    ]
+
+    exclude_files = [
+        "submit_assn.py",
+        "test.py",
+        "test.ipynb",
+        "Figures.md",
+        zip_name,
+        "test.ipynb"
+    ]
+
+
+    assignment_num = assignment[-1]
+
+    template = f"""---
+    title: "Assignment {assignment_num} Plots"
+    author: "Shailja Kant Tiwari"
+    header-includes:
+    - \\usepackage{{amssymb,amsmath,geometry}}
+    - \\setmainfont{{TeX Gyre Schola}}
+    - \\setmathfont{{TeX Gyre Schola Math}}
+    output:
+    pdf_document
+    ---
+
+    # Assignment {assignment_num}
+
+    """
+    main(assignment=assignment, zip_name=zip_name,
+        exclude_folders=exclude_folders, exclude_files=exclude_files, 
+        mark_down_fig=mark_down_fig, fig_folder=fig_folder, template=template)
+    

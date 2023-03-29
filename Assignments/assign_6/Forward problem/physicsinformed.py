@@ -57,15 +57,15 @@ class PhysicsInformedBarModel:
         '''
 
         # boundary conditions
-        boundary_u = torch.tensor([self.u0, 0.0])
-        boundary_x = torch.tensor([0.0, self.L])
+        boundary_u = torch.tensor([self.u0, 0.0], requires_grad=True).reshape(-1, 1)
+        boundary_x = torch.tensor([0.0, self.L], requires_grad=True).reshape(-1, 1)
 
         # calculate boundary loss
-        boundary_condition_loss = ((u_pred[0] - boundary_u[0])**2 + ((u_pred[-1] - boundary_u[1])**2))/2
+        boundary_condition_loss = torch.mean((self.u(boundary_x) - boundary_u)**2)
 
         # calculate PDE residual loss
-        ux = torch.autograd.grad(u_pred.sum(), x, create_graph=True)[0]
-        uxx = torch.autograd.grad(ux.sum(), x, create_graph=True)[0]
+        ux = torch.autograd.grad(u_pred, x, create_graph=True, grad_outputs=torch.ones_like(x) )[0]
+        uxx = torch.autograd.grad(ux, x, create_graph=True, grad_outputs=torch.ones_like(x))[0]
 
         uxx += 4*torch.pi**2*torch.sin(2*torch.pi*x)
 
@@ -107,25 +107,31 @@ class PhysicsInformedBarModel:
             Enter your code        
         '''
 
-        optimizer = torch.optim.Adam(self.u.parameters(), lr=0.001)
+        if optimizer == "LBFGS":
+            optimizer = torch.optim.LBFGS(self.u.parameters(), **kwargs)
+        else:
+            optimizer = torch.optim.SGD(self.u.parameters(), **kwargs)
         self.loss_history = []
 
-
         for epoch in range(epochs):
+            def closure():
+                optimizer.zero_grad()
+                u_pred = self.u(self.x)
+                differential_equation_loss, boundary_condition_loss = self.costFunction(self.x, u_pred)
+                loss = differential_equation_loss + boundary_condition_loss
+                loss.backward(retain_graph=True)
+                # self.loss_history.append(loss.item())
+                return loss
+            
+            differential_equation_loss, boundary_condition_loss = self.costFunction(self.x, self.u(self.x))
+            total_loss = differential_equation_loss + boundary_condition_loss
+            
+            self.loss_history.append([differential_equation_loss.item(), boundary_condition_loss.item(), total_loss.item()])
 
-            optimizer.zero_grad()
-            u_pred = self.get_displacements(self.x)
-            differential_equation_loss, boundary_condition_loss = self.costFunction(self.x, u_pred)
-            loss = differential_equation_loss + boundary_condition_loss
-            loss.backward()
-            optimizer.step()
-
-            self.loss_history.append([differential_equation_loss.item(), boundary_condition_loss.item(), loss.item()])
-
-            if epoch % 100 == 0:
-                print('epoch {}, loss {}'.format(epoch, loss.item()))
-
-        
-
+            if epoch % 10 == 0:
+                print(f'epoch {epoch}/{epochs}, loss {total_loss.item()}')
+            
+            
+            optimizer.step(closure)
 
                 
